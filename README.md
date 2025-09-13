@@ -537,127 +537,7 @@ public class MyApp extends Application {
 }
 ```
 
-## AAR Publishing
 
-### Building the AAR
-
-To build the AAR for distribution:
-
-```bash
-./gradlew :Grantly:assembleRelease
-```
-
-The AAR will be generated at `Grantly/build/outputs/aar/Grantly-release.aar`
-
-### Publishing to Maven Central
-
-1. **Configure your `build.gradle`:**
-
-```gradle
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
-
-android {
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
-}
-
-publishing {
-    publications {
-        release(MavenPublication) {
-            groupId = 'dev.grantly'
-            artifactId = 'grantly'
-            version = '1.0.0'
-            
-            afterEvaluate {
-                from components.release
-            }
-            
-            pom {
-                name = 'Grantly Android Permission SDK'
-                description = 'Comprehensive Android Permission Management SDK'
-                url = 'https://github.com/yourusername/grantly'
-                
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                
-                developers {
-                    developer {
-                        id = 'PrajyotxD'
-                        name = 'PrajyotxD'
-                    }
-                }
-                
-                scm {
-                    connection = 'scm:git:git://github.com/PrajyotxD/Grantly.git'
-                    developerConnection = 'scm:git:ssh://github.com:PrajyotxD/Grantly.git'
-                    url = 'https://github.com/PrajyotxD/Grantly/tree/main'
-                }
-            }
-        }
-    }
-    
-    repositories {
-        maven {
-            name = "sonatype"
-            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            credentials {
-                username = ossrhUsername
-                password = ossrhPassword
-            }
-        }
-    }
-}
-
-signing {
-    sign publishing.publications.release
-}
-```
-
-2. **Add to `gradle.properties`:**
-
-```properties
-ossrhUsername=your_username
-ossrhPassword=your_password
-signing.keyId=your_key_id
-signing.password=your_key_password
-signing.secretKeyRingFile=path/to/secring.gpg
-```
-
-3. **Publish:**
-
-```bash
-./gradlew publishReleasePublicationToSonatypeRepository
-```
-
-### Publishing to JitPack
-
-1. **Tag your release:**
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-2. **Users can then include:**
-
-```gradle
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-
-dependencies {
-    implementation 'com.github.PrajyotxD:Grantly:v1.0.0'
-}
-```
 
 ## Changelog
 
@@ -675,10 +555,11 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Development Setup
 
-1. Clone the repository
-2. Open in Android Studio
-3. Run tests: `./gradlew test`
-4. Run instrumentation tests: `./gradlew connectedAndroidTest`
+1. Fork the repository
+2. Clone your fork
+3. Open in Android Studio
+4. Make your changes
+5. Submit a pull request
 
 ## License
 
