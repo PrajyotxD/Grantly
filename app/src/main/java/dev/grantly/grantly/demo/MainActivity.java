@@ -44,8 +44,26 @@ public class MainActivity extends AppCompatActivity {
         setupUI();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        
+        // Log the permission result details
+        Log.d(TAG, "onRequestPermissionsResult called:");
+        Log.d(TAG, "  - Request code: " + requestCode);
+        Log.d(TAG, "  - Permissions: " + java.util.Arrays.toString(permissions));
+        Log.d(TAG, "  - Grant results: " + java.util.Arrays.toString(grantResults));
+        
+        // Forward the result to Grantly SDK for processing
+        boolean handled = Grantly.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(TAG, "  - Handled by Grantly: " + handled);
+    }
+
     private void initializeGrantly() {
-        // Configure Grantly with default settings
+        // First initialize the SDK with the application context
+        Grantly.initialize(this);
+        
+        // Then configure Grantly with custom settings
         GrantlyConfig config = new GrantlyConfig.Builder()
                 .setDefaultLazyMode(false)
                 .setDefaultDenialBehavior(DenialBehavior.CONTINUE_APP_FLOW)
@@ -53,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         
         Grantly.configure(config);
-        Log.d(TAG, "Grantly SDK initialized");
+        
+        Log.d(TAG, "Grantly SDK initialized and configured");
     }
 
     private void setupUI() {

@@ -285,7 +285,14 @@ public final class Grantly {
      */
     static PermissionManager getPermissionManager() {
         if (permissionManager == null) {
-            throw new GrantlyException("Grantly SDK not initialized. Call Grantly.initialize() or use requestPermissions() first.");
+            // Try to initialize if we have an application context
+            if (applicationContext != null) {
+                ensureInitialized(applicationContext);
+            }
+            
+            if (permissionManager == null) {
+                throw new GrantlyException("Grantly SDK not initialized. Call Grantly.initialize() or use requestPermissions() first.");
+            }
         }
         return permissionManager;
     }
