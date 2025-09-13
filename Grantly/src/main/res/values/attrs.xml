@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Grantly Theme Attributes -->
+    <declare-styleable name="GrantlyTheme">
+        
+        <!-- Dialog Attributes -->
+        <attr name="grantlyDialogBackgroundColor" format="color" />
+        <attr name="grantlyDialogBorderColor" format="color" />
+        <attr name="grantlyDialogIconTint" format="color" />
+        
+        <!-- Text Attributes -->
+        <attr name="grantlyDialogTitleTextAppearance" format="reference" />
+        <attr name="grantlyDialogTitleTextColor" format="color" />
+        <attr name="grantlyDialogMessageTextAppearance" format="reference" />
+        <attr name="grantlyDialogMessageTextColor" format="color" />
+        
+        <!-- Permission Item Attributes -->
+        <attr name="grantlyPermissionNameTextAppearance" format="reference" />
+        <attr name="grantlyPermissionNameTextColor" format="color" />
+        <attr name="grantlyPermissionDescTextAppearance" format="reference" />
+        <attr name="grantlyPermissionDescTextColor" format="color" />
+        <attr name="grantlyPermissionItemIconTint" format="color" />
+        
+        <!-- Button Styles -->
+        <attr name="grantlyDialogButtonPrimaryStyle" format="reference" />
+        <attr name="grantlyDialogButtonSecondaryStyle" format="reference" />
+        
+        <!-- Toast Attributes -->
+        <attr name="grantlyToastBackgroundColor" format="color" />
+        <attr name="grantlyToastTextColor" format="color" />
+        <attr name="grantlyToastTextAppearance" format="reference" />
+        
+    </declare-styleable>
+    
+    <!-- Custom Dialog Attributes -->
+    <declare-styleable name="GrantlyDialog">
+        <attr name="grantlyDialogTheme" format="reference" />
+        <attr name="grantlyDialogLayout" format="reference" />
+        <attr name="grantlyDialogCancelable" format="boolean" />
+        <attr name="grantlyDialogCanceledOnTouchOutside" format="boolean" />
+    </declare-styleable>
+    
+    <!-- Custom Button Attributes -->
+    <declare-styleable name="GrantlyButton">
+        <attr name="grantlyButtonBackgroundColor" format="color" />
+        <attr name="grantlyButtonTextColor" format="color" />
+        <attr name="grantlyButtonTextAppearance" format="reference" />
+        <attr name="grantlyButtonCornerRadius" format="dimension" />
+        <attr name="grantlyButtonBorderWidth" format="dimension" />
+        <attr name="grantlyButtonBorderColor" format="color" />
+    </declare-styleable>
+    
+</resources>

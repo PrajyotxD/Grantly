@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Primary Colors -->
+    <color name="grantly_primary">#2196F3</color>
+    <color name="grantly_primary_dark">#1976D2</color>
+    <color name="grantly_primary_light">#BBDEFB</color>
+    
+    <!-- Secondary Colors -->
+    <color name="grantly_secondary">#FF9800</color>
+    <color name="grantly_secondary_dark">#F57C00</color>
+    <color name="grantly_secondary_light">#FFE0B2</color>
+    
+    <!-- Dialog Colors - Light Theme -->
+    <color name="grantly_dialog_background">#FFFFFF</color>
+    <color name="grantly_dialog_border">#E0E0E0</color>
+    
+    <!-- Dialog Colors - Dark Theme -->
+    <color name="grantly_dialog_background_dark">#424242</color>
+    <color name="grantly_dialog_border_dark">#616161</color>
+    
+    <!-- Text Colors - Light Theme -->
+    <color name="grantly_text_primary">#212121</color>
+    <color name="grantly_text_secondary">#757575</color>
+    
+    <!-- Text Colors - Dark Theme -->
+    <color name="grantly_text_primary_dark">#FFFFFF</color>
+    <color name="grantly_text_secondary_dark">#BDBDBD</color>
+    
+    <!-- Button Colors -->
+    <color name="grantly_button_primary_background">#2196F3</color>
+    <color name="grantly_button_primary_background_pressed">#1976D2</color>
+    <color name="grantly_button_primary_text">#FFFFFF</color>
+    
+    <color name="grantly_button_secondary_background">#FFFFFF</color>
+    <color name="grantly_button_secondary_background_pressed">#F5F5F5</color>
+    <color name="grantly_button_secondary_text">#2196F3</color>
+    <color name="grantly_button_secondary_border">#2196F3</color>
+    
+    <!-- Toast Colors - Light Theme -->
+    <color name="grantly_toast_background">#323232</color>
+    <color name="grantly_toast_text">#FFFFFF</color>
+    
+    <!-- Toast Colors - Dark Theme -->
+    <color name="grantly_toast_background_dark">#616161</color>
+    <color name="grantly_toast_text_dark">#FFFFFF</color>
+    
+    <!-- Status Colors -->
+    <color name="grantly_success">#4CAF50</color>
+    <color name="grantly_warning">#FF9800</color>
+    <color name="grantly_error">#F44336</color>
+    
+</resources>

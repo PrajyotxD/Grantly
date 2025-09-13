@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/grantly_dialog_padding"
+    android:background="@drawable/grantly_dialog_background">
+
+    <!-- Dialog Icon -->
+    <ImageView
+        android:id="@+id/grantly_rationale_icon"
+        android:layout_width="@dimen/grantly_dialog_icon_size"
+        android:layout_height="@dimen/grantly_dialog_icon_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/grantly_dialog_spacing_medium"
+        android:src="@drawable/grantly_ic_permission"
+        android:contentDescription="@string/grantly_permission_icon_desc" />
+
+    <!-- Dialog Title -->
+    <TextView
+        android:id="@+id/grantly_rationale_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/grantly_dialog_spacing_small"
+        android:gravity="center"
+        android:textAppearance="?attr/grantlyDialogTitleTextAppearance"
+        android:textColor="?attr/grantlyDialogTitleTextColor"
+        android:text="@string/grantly_rationale_default_title" />
+
+    <!-- Dialog Message -->
+    <TextView
+        android:id="@+id/grantly_rationale_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/grantly_dialog_spacing_large"
+        android:gravity="center"
+        android:textAppearance="?attr/grantlyDialogMessageTextAppearance"
+        android:textColor="?attr/grantlyDialogMessageTextColor"
+        android:text="@string/grantly_rationale_default_message" />
+
+    <!-- Button Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <!-- Cancel Button -->
+        <Button
+            android:id="@+id/grantly_rationale_cancel"
+            style="?attr/grantlyDialogButtonSecondaryStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/grantly_dialog_spacing_small"
+            android:text="@string/grantly_cancel" />
+
+        <!-- Continue Button -->
+        <Button
+            android:id="@+id/grantly_rationale_continue"
+            style="?attr/grantlyDialogButtonPrimaryStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grantly_continue" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,270 @@
+plugins {
+    alias(libs.plugins.android.library)
+    id 'maven-publish'
+    id 'signing'
+}
+
+android {
+    namespace 'dev.grantly.px'
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 23  // Android 6.0+ for runtime permissions
+        targetSdk 34
+        
+        // Library version information
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+        
+        // AAR metadata
+        buildConfigField "String", "SDK_VERSION", "\"1.0.0\""
+        buildConfigField "int", "SDK_VERSION_CODE", "1"
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+            testCoverageEnabled true
+        }
+        
+        release {
+            minifyEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            consumerProguardFiles "consumer-rules.pro"
+        }
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    
+    // Enable BuildConfig generation
+    buildFeatures {
+        buildConfig true
+    }
+    
+    // Configure AAR publishing
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+    
+    // Lint configuration
+    lint {
+        abortOnError false
+        checkReleaseBuilds true
+        ignoreWarnings false
+        warningsAsErrors false
+        xmlReport true
+        htmlReport true
+        textReport true
+        checkDependencies true
+    }
+    
+    // Test options
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+        
+        unitTests.all {
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen {false}
+                showStandardStreams = true
+            }
+        }
+    }
+}
+
+dependencies {
+
+    implementation libs.appcompat
+    implementation libs.material
+    testImplementation libs.junit
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'org.robolectric:robolectric:4.10.3'
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+}
+/
+/ Publishing configuration
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'dev.grantly'
+            artifactId = 'grantly'
+            version = '1.0.0'
+            
+            afterEvaluate {
+                from components.release
+            }
+            
+            pom {
+                name = 'Grantly Android Permission SDK'
+                description = 'Comprehensive Android Permission Management SDK with automatic manifest parsing, customizable UI, and robust error handling'
+                url = 'https://github.com/PrajyotxD/Grantly'
+                
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                
+                developers {
+                    developer {
+                        id = 'PrajyotxD'
+                        name = 'PrajyotxD'
+                    }
+                }
+                
+                scm {
+                    connection = 'scm:git:git://github.com/PrajyotxD/Grantly.git'
+                    developerConnection = 'scm:git:ssh://github.com:PrajyotxD/Grantly.git'
+                    url = 'https://github.com/PrajyotxD/Grantly/tree/main'
+                }
+            }
+        }
+    }
+    
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/PrajyotxD/Grantly"
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+        
+        maven {
+            name = "sonatype"
+            url = version.endsWith('SNAPSHOT') ? 
+                "https://s01.oss.sonatype.org/content/repositories/snapshots/" :
+                "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
+                password = project.findProperty("ossrhPassword") ?: System.getenv("OSSRH_PASSWORD")
+            }
+        }
+    }
+}
+
+// Signing configuration for Maven Central
+signing {
+    required { gradle.taskGraph.hasTask("publish") }
+    sign publishing.publications.release
+}
+
+// Custom tasks for AAR validation and testing
+task validateAar {
+    group = 'verification'
+    description = 'Validates the generated AAR file'
+    dependsOn 'assembleRelease'
+    
+    doLast {
+        def aarFile = file("${buildDir}/outputs/aar/Grantly-release.aar")
+        if (!aarFile.exists()) {
+            throw new GradleException("AAR file not found: ${aarFile.absolutePath}")
+        }
+        
+        println "AAR file generated successfully: ${aarFile.absolutePath}"
+        println "AAR file size: ${aarFile.length()} bytes"
+        
+        // Validate AAR contents
+        def zipFile = new java.util.zip.ZipFile(aarFile)
+        def entries = zipFile.entries().collect { it.name }
+        
+        // Check for required files
+        def requiredFiles = ['AndroidManifest.xml', 'classes.jar', 'R.txt']
+        requiredFiles.each { required ->
+            if (!entries.contains(required)) {
+                throw new GradleException("Required file missing from AAR: ${required}")
+            }
+        }
+        
+        // Check for ProGuard rules
+        if (!entries.contains('proguard.txt') && !entries.contains('consumer-proguard-rules.pro')) {
+            println "Warning: No ProGuard rules found in AAR"
+        }
+        
+        zipFile.close()
+        println "AAR validation completed successfully"
+    }
+}
+
+// Task to generate checksums for published artifacts
+task generateChecksums {
+    group = 'publishing'
+    description = 'Generates checksums for published artifacts'
+    dependsOn 'assembleRelease'
+    
+    doLast {
+        def aarFile = file("${buildDir}/outputs/aar/Grantly-release.aar")
+        if (aarFile.exists()) {
+            def md5 = java.security.MessageDigest.getInstance("MD5")
+            def sha1 = java.security.MessageDigest.getInstance("SHA-1")
+            def sha256 = java.security.MessageDigest.getInstance("SHA-256")
+            
+            aarFile.withInputStream { stream ->
+                def buffer = new byte[8192]
+                int bytesRead
+                while ((bytesRead = stream.read(buffer)) != -1) {
+                    md5.update(buffer, 0, bytesRead)
+                    sha1.update(buffer, 0, bytesRead)
+                    sha256.update(buffer, 0, bytesRead)
+                }
+            }
+            
+            def md5Hash = md5.digest().encodeHex().toString()
+            def sha1Hash = sha1.digest().encodeHex().toString()
+            def sha256Hash = sha256.digest().encodeHex().toString()
+            
+            file("${buildDir}/outputs/aar/Grantly-release.aar.md5").text = md5Hash
+            file("${buildDir}/outputs/aar/Grantly-release.aar.sha1").text = sha1Hash
+            file("${buildDir}/outputs/aar/Grantly-release.aar.sha256").text = sha256Hash
+            
+            println "Checksums generated:"
+            println "MD5: ${md5Hash}"
+            println "SHA1: ${sha1Hash}"
+            println "SHA256: ${sha256Hash}"
+        }
+    }
+}
+
+// Task to prepare release artifacts
+task prepareRelease {
+    group = 'publishing'
+    description = 'Prepares all release artifacts'
+    dependsOn 'clean', 'assembleRelease', 'validateAar', 'generateChecksums', 'publishToMavenLocal'
+    
+    doLast {
+        println "Release artifacts prepared successfully"
+        println "AAR location: ${buildDir}/outputs/aar/Grantly-release.aar"
+        println "Sources JAR: ${buildDir}/outputs/aar/Grantly-release-sources.jar"
+        println "Javadoc JAR: ${buildDir}/outputs/aar/Grantly-release-javadoc.jar"
+    }
+}
+
+// Ensure proper task ordering
+tasks.named('validateAar') {
+    mustRunAfter 'assembleRelease'
+}
+
+tasks.named('generateChecksums') {
+    mustRunAfter 'validateAar'
+}
+
+tasks.named('publish') {
+    dependsOn 'validateAar'
+}

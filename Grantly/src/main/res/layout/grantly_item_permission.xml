@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/grantly_item_padding"
+    android:gravity="center_vertical">
+
+    <!-- Permission Icon -->
+    <ImageView
+        android:id="@+id/grantly_permission_icon"
+        android:layout_width="@dimen/grantly_item_icon_size"
+        android:layout_height="@dimen/grantly_item_icon_size"
+        android:layout_marginEnd="@dimen/grantly_item_spacing"
+        android:src="@drawable/grantly_ic_permission_item"
+        android:contentDescription="@string/grantly_permission_item_icon_desc" />
+
+    <!-- Permission Info Container -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Permission Name -->
+        <TextView
+            android:id="@+id/grantly_permission_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/grantlyPermissionNameTextAppearance"
+            android:textColor="?attr/grantlyPermissionNameTextColor"
+            android:text="@string/grantly_permission_name_placeholder" />
+
+        <!-- Permission Description -->
+        <TextView
+            android:id="@+id/grantly_permission_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/grantlyPermissionDescTextAppearance"
+            android:textColor="?attr/grantlyPermissionDescTextColor"
+            android:text="@string/grantly_permission_desc_placeholder" />
+
+    </LinearLayout>
+
+</LinearLayout>

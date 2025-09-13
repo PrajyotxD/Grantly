@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Base Grantly Theme -->
+    <style name="GrantlyTheme" parent="Theme.AppCompat.Light.Dialog">
+        
+        <!-- Dialog Colors -->
+        <item name="grantlyDialogBackgroundColor">@color/grantly_dialog_background</item>
+        <item name="grantlyDialogBorderColor">@color/grantly_dialog_border</item>
+        <item name="grantlyDialogIconTint">@color/grantly_primary</item>
+        
+        <!-- Text Appearances -->
+        <item name="grantlyDialogTitleTextAppearance">@style/GrantlyTextAppearance.DialogTitle</item>
+        <item name="grantlyDialogTitleTextColor">@color/grantly_text_primary</item>
+        <item name="grantlyDialogMessageTextAppearance">@style/GrantlyTextAppearance.DialogMessage</item>
+        <item name="grantlyDialogMessageTextColor">@color/grantly_text_secondary</item>
+        
+        <!-- Permission Item Attributes -->
+        <item name="grantlyPermissionNameTextAppearance">@style/GrantlyTextAppearance.PermissionName</item>
+        <item name="grantlyPermissionNameTextColor">@color/grantly_text_primary</item>
+        <item name="grantlyPermissionDescTextAppearance">@style/GrantlyTextAppearance.PermissionDesc</item>
+        <item name="grantlyPermissionDescTextColor">@color/grantly_text_secondary</item>
+        <item name="grantlyPermissionItemIconTint">@color/grantly_primary</item>
+        
+        <!-- Button Styles -->
+        <item name="grantlyDialogButtonPrimaryStyle">@style/GrantlyButton.Primary</item>
+        <item name="grantlyDialogButtonSecondaryStyle">@style/GrantlyButton.Secondary</item>
+        
+        <!-- Toast Attributes -->
+        <item name="grantlyToastBackgroundColor">@color/grantly_toast_background</item>
+        <item name="grantlyToastTextColor">@color/grantly_toast_text</item>
+        <item name="grantlyToastTextAppearance">@style/GrantlyTextAppearance.Toast</item>
+        
+    </style>
+    
+    <!-- Dark Theme -->
+    <style name="GrantlyTheme.Dark" parent="Theme.AppCompat.Dialog">
+        
+        <!-- Dialog Colors -->
+        <item name="grantlyDialogBackgroundColor">@color/grantly_dialog_background_dark</item>
+        <item name="grantlyDialogBorderColor">@color/grantly_dialog_border_dark</item>
+        <item name="grantlyDialogIconTint">@color/grantly_primary_dark</item>
+        
+        <!-- Text Colors -->
+        <item name="grantlyDialogTitleTextColor">@color/grantly_text_primary_dark</item>
+        <item name="grantlyDialogMessageTextColor">@color/grantly_text_secondary_dark</item>
+        <item name="grantlyPermissionNameTextColor">@color/grantly_text_primary_dark</item>
+        <item name="grantlyPermissionDescTextColor">@color/grantly_text_secondary_dark</item>
+        <item name="grantlyPermissionItemIconTint">@color/grantly_primary_dark</item>
+        
+        <!-- Toast Colors -->
+        <item name="grantlyToastBackgroundColor">@color/grantly_toast_background_dark</item>
+        <item name="grantlyToastTextColor">@color/grantly_toast_text_dark</item>
+        
+    </style>
+    
+    <!-- Text Appearances -->
+    <style name="GrantlyTextAppearance.DialogTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="GrantlyTextAppearance.DialogMessage" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+    
+    <style name="GrantlyTextAppearance.PermissionName" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="GrantlyTextAppearance.PermissionDesc" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <style name="GrantlyTextAppearance.Toast" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
+    </style>
+    
+    <!-- Button Styles -->
+    <style name="GrantlyButton" parent="Widget.AppCompat.Button">
+        <item name="android:minWidth">@dimen/grantly_button_min_width</item>
+        <item name="android:minHeight">@dimen/grantly_button_min_height</item>
+        <item name="android:paddingLeft">@dimen/grantly_button_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/grantly_button_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/grantly_button_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/grantly_button_padding_vertical</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    
+    <style name="GrantlyButton.Primary">
+        <item name="android:background">@drawable/grantly_button_primary_background</item>
+        <item name="android:textColor">@color/grantly_button_primary_text</item>
+    </style>
+    
+    <style name="GrantlyButton.Secondary">
+        <item name="android:background">@drawable/grantly_button_secondary_background</item>
+        <item name="android:textColor">@color/grantly_button_secondary_text</item>
+    </style>
+    
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Dialog Titles -->
+    <string name="grantly_rationale_default_title">Permission Required</string>
+    <string name="grantly_request_default_title">Grant Permissions</string>
+    
+    <!-- Dialog Messages -->
+    <string name="grantly_rationale_default_message">This app needs certain permissions to function properly. Please allow the requested permissions to continue.</string>
+    <string name="grantly_request_default_message">The following permissions are required for this feature:</string>
+    
+    <!-- Button Labels -->
+    <string name="grantly_cancel">Cancel</string>
+    <string name="grantly_continue">Continue</string>
+    <string name="grantly_deny">Deny</string>
+    <string name="grantly_allow">Allow</string>
+    <string name="grantly_settings">Settings</string>
+    <string name="grantly_ok">OK</string>
+    
+    <!-- Content Descriptions -->
+    <string name="grantly_permission_icon_desc">Permission icon</string>
+    <string name="grantly_permission_request_icon_desc">Permission request icon</string>
+    <string name="grantly_permission_item_icon_desc">Permission item icon</string>
+    <string name="grantly_toast_icon_desc">Toast icon</string>
+    
+    <!-- Placeholder Text -->
+    <string name="grantly_permission_name_placeholder">Permission Name</string>
+    <string name="grantly_permission_desc_placeholder">Permission description</string>
+    
+    <!-- Toast Messages -->
+    <string name="grantly_toast_permission_granted">Permission granted</string>
+    <string name="grantly_toast_permission_denied">Permission denied</string>
+    <string name="grantly_toast_permission_permanently_denied">Permission permanently denied. Please enable it in Settings.</string>
+    
+    <!-- Permission Names -->
+    <string name="grantly_permission_camera">Camera</string>
+    <string name="grantly_permission_microphone">Microphone</string>
+    <string name="grantly_permission_location">Location</string>
+    <string name="grantly_permission_storage">Storage</string>
+    <string name="grantly_permission_contacts">Contacts</string>
+    <string name="grantly_permission_phone">Phone</string>
+    <string name="grantly_permission_sms">SMS</string>
+    <string name="grantly_permission_calendar">Calendar</string>
+    
+    <!-- Permission Descriptions -->
+    <string name="grantly_permission_camera_desc">Access camera to take photos and videos</string>
+    <string name="grantly_permission_microphone_desc">Access microphone to record audio</string>
+    <string name="grantly_permission_location_desc">Access device location</string>
+    <string name="grantly_permission_storage_desc">Access device storage to read and write files</string>
+    <string name="grantly_permission_contacts_desc">Access contacts information</string>
+    <string name="grantly_permission_phone_desc">Access phone features and call information</string>
+    <string name="grantly_permission_sms_desc">Access SMS messages</string>
+    <string name="grantly_permission_calendar_desc">Access calendar events</string>
+    
+</resources>

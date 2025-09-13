@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- Dialog Dimensions -->
+    <dimen name="grantly_dialog_padding">24dp</dimen>
+    <dimen name="grantly_dialog_corner_radius">12dp</dimen>
+    <dimen name="grantly_dialog_border_width">1dp</dimen>
+    <dimen name="grantly_dialog_icon_size">48dp</dimen>
+    
+    <!-- Dialog Spacing -->
+    <dimen name="grantly_dialog_spacing_small">8dp</dimen>
+    <dimen name="grantly_dialog_spacing_medium">16dp</dimen>
+    <dimen name="grantly_dialog_spacing_large">24dp</dimen>
+    
+    <!-- Item Dimensions -->
+    <dimen name="grantly_item_padding">12dp</dimen>
+    <dimen name="grantly_item_icon_size">24dp</dimen>
+    <dimen name="grantly_item_spacing">12dp</dimen>
+    
+    <!-- Button Dimensions -->
+    <dimen name="grantly_button_padding_horizontal">16dp</dimen>
+    <dimen name="grantly_button_padding_vertical">8dp</dimen>
+    <dimen name="grantly_button_corner_radius">8dp</dimen>
+    <dimen name="grantly_button_min_width">88dp</dimen>
+    <dimen name="grantly_button_min_height">36dp</dimen>
+    
+    <!-- Toast Dimensions -->
+    <dimen name="grantly_toast_padding">12dp</dimen>
+    <dimen name="grantly_toast_icon_size">20dp</dimen>
+    <dimen name="grantly_toast_spacing">8dp</dimen>
+    <dimen name="grantly_toast_corner_radius">8dp</dimen>
+    
+</resources>
