@@ -35,6 +35,15 @@ public class PermissionChecker {
     }
     
     /**
+     * Gets the application context used by this PermissionChecker.
+     *
+     * @return The application context
+     */
+    public Context getApplicationContext() {
+        return context;
+    }
+    
+    /**
      * Checks the current state of a single permission.
      *
      * @param permission The permission to check

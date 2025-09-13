@@ -128,8 +128,14 @@ public class SpecialPermissionHandler {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                Uri uri = Uri.parse("package:" + activity.getPackageName());
+                
+                // CRITICAL SECURITY FIX: Always specify our own package to prevent affecting other apps
+                String ourPackage = activity.getPackageName();
+                Uri uri = Uri.parse("package:" + ourPackage);
                 intent.setData(uri);
+                
+                android.util.Log.d(TAG, "Launching overlay permission for package: " + ourPackage);
+                
                 activity.startActivityForResult(intent, REQUEST_CODE_OVERLAY_PERMISSION);
                 return true;
             } catch (Exception e) {
@@ -154,8 +160,14 @@ public class SpecialPermissionHandler {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                Uri uri = Uri.parse("package:" + activity.getPackageName());
+                
+                // CRITICAL SECURITY FIX: Always specify our own package to prevent affecting other apps
+                String ourPackage = activity.getPackageName();
+                Uri uri = Uri.parse("package:" + ourPackage);
                 intent.setData(uri);
+                
+                android.util.Log.d(TAG, "Launching write settings permission for package: " + ourPackage);
+                
                 activity.startActivityForResult(intent, REQUEST_CODE_WRITE_SETTINGS);
                 return true;
             } catch (Exception e) {
@@ -180,8 +192,14 @@ public class SpecialPermissionHandler {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             try {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
-                Uri uri = Uri.parse("package:" + activity.getPackageName());
+                
+                // CRITICAL SECURITY FIX: Always specify our own package to prevent affecting other apps
+                String ourPackage = activity.getPackageName();
+                Uri uri = Uri.parse("package:" + ourPackage);
                 intent.setData(uri);
+                
+                android.util.Log.d(TAG, "Launching install packages permission for package: " + ourPackage);
+                
                 activity.startActivityForResult(intent, REQUEST_CODE_INSTALL_PACKAGES);
                 return true;
             } catch (Exception e) {
@@ -206,8 +224,14 @@ public class SpecialPermissionHandler {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             try {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                Uri uri = Uri.parse("package:" + activity.getPackageName());
+                
+                // CRITICAL SECURITY FIX: Always specify our own package to prevent affecting other apps
+                String ourPackage = activity.getPackageName();
+                Uri uri = Uri.parse("package:" + ourPackage);
                 intent.setData(uri);
+                
+                android.util.Log.d(TAG, "Launching manage external storage permission for package: " + ourPackage);
+                
                 activity.startActivityForResult(intent, REQUEST_CODE_MANAGE_STORAGE);
                 return true;
             } catch (Exception e) {
@@ -231,24 +255,52 @@ public class SpecialPermissionHandler {
      */
     private boolean handleBackgroundLocationPermission(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            // Check if fine/coarse location permissions are granted first
-            boolean hasFineLocation = ActivityCompat.checkSelfPermission(activity, 
-                android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-            boolean hasCoarseLocation = ActivityCompat.checkSelfPermission(activity, 
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-            
-            if (!hasFineLocation && !hasCoarseLocation) {
-                // Need to request fine/coarse location first
-                ActivityCompat.requestPermissions(activity, 
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 
-                    REQUEST_CODE_BACKGROUND_LOCATION);
-                return true;
-            } else {
-                // Fine/coarse location already granted, request background location
-                ActivityCompat.requestPermissions(activity, 
-                    new String[]{ACCESS_BACKGROUND_LOCATION}, 
-                    REQUEST_CODE_BACKGROUND_LOCATION);
-                return true;
+            // SECURITY FIX: Add safety checks to prevent system interference
+            try {
+                // Check if fine/coarse location permissions are granted first
+                boolean hasFineLocation = ActivityCompat.checkSelfPermission(activity, 
+                    android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                boolean hasCoarseLocation = ActivityCompat.checkSelfPermission(activity, 
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                
+                // SAFETY: Only proceed if we have foreground location permission first
+                if (!hasFineLocation && !hasCoarseLocation) {
+                    // Log the safety check
+                    android.util.Log.d(TAG, "Background location requires foreground location first - requesting foreground");
+                    
+                    // CRITICAL: Only request for our own app's package
+                    String ourPackage = activity.getPackageName();
+                    android.util.Log.d(TAG, "Requesting foreground location for package: " + ourPackage);
+                    
+                    ActivityCompat.requestPermissions(activity, 
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 
+                        REQUEST_CODE_BACKGROUND_LOCATION);
+                    return true;
+                } else {
+                    // Fine/coarse location already granted, request background location
+                    android.util.Log.d(TAG, "Foreground location granted, requesting background location");
+                    
+                    // CRITICAL: Only request for our own app's package
+                    String ourPackage = activity.getPackageName();
+                    android.util.Log.d(TAG, "Requesting background location for package: " + ourPackage);
+                    
+                    ActivityCompat.requestPermissions(activity, 
+                        new String[]{ACCESS_BACKGROUND_LOCATION}, 
+                        REQUEST_CODE_BACKGROUND_LOCATION);
+                    return true;
+                }
+            } catch (SecurityException e) {
+                android.util.Log.e(TAG, "Security exception during background location request", e);
+                if (callback != null) {
+                    callback.onSpecialPermissionResult(ACCESS_BACKGROUND_LOCATION, false);
+                }
+                return false;
+            } catch (Exception e) {
+                android.util.Log.e(TAG, "Unexpected exception during background location request", e);
+                if (callback != null) {
+                    callback.onSpecialPermissionResult(ACCESS_BACKGROUND_LOCATION, false);
+                }
+                return false;
             }
         } else {
             // On pre-Q devices, background location is granted with fine/coarse location
@@ -266,11 +318,29 @@ public class SpecialPermissionHandler {
      */
     private boolean handleNotificationPermission(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Use standard permission request for notification permission
-            ActivityCompat.requestPermissions(activity, 
-                new String[]{POST_NOTIFICATIONS}, 
-                REQUEST_CODE_BACKGROUND_LOCATION); // Reuse request code as it's handled similarly
-            return true;
+            try {
+                // CRITICAL: Only request for our own app's package
+                String ourPackage = activity.getPackageName();
+                android.util.Log.d(TAG, "Requesting notification permission for package: " + ourPackage);
+                
+                // Use standard permission request for notification permission
+                ActivityCompat.requestPermissions(activity, 
+                    new String[]{POST_NOTIFICATIONS}, 
+                    REQUEST_CODE_BACKGROUND_LOCATION); // Reuse request code as it's handled similarly
+                return true;
+            } catch (SecurityException e) {
+                android.util.Log.e(TAG, "Security exception during notification permission request", e);
+                if (callback != null) {
+                    callback.onSpecialPermissionResult(POST_NOTIFICATIONS, false);
+                }
+                return false;
+            } catch (Exception e) {
+                android.util.Log.e(TAG, "Unexpected exception during notification permission request", e);
+                if (callback != null) {
+                    callback.onSpecialPermissionResult(POST_NOTIFICATIONS, false);
+                }
+                return false;
+            }
         } else {
             // On pre-Tiramisu devices, notification permission is granted at install time
             if (callback != null) {

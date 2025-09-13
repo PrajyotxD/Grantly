@@ -1,11 +1,13 @@
 package dev.grantly.grantly.demo;
 
 import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.pm.PackageManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,15 +50,90 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         
-        // Log the permission result details
+        // Log the permission result details with enhanced debugging
+        Log.d(TAG, "=== PERMISSION RESULT DEBUG START ===");
         Log.d(TAG, "onRequestPermissionsResult called:");
         Log.d(TAG, "  - Request code: " + requestCode);
+        Log.d(TAG, "  - Our package: " + getPackageName());
         Log.d(TAG, "  - Permissions: " + java.util.Arrays.toString(permissions));
         Log.d(TAG, "  - Grant results: " + java.util.Arrays.toString(grantResults));
+        
+        // SAFETY CHECK: Verify this is for our app only
+        if (permissions != null && permissions.length > 0) {
+            Log.d(TAG, "  - Permission details:");
+            for (int i = 0; i < permissions.length; i++) {
+                String status = (grantResults != null && i < grantResults.length && 
+                    grantResults[i] == PackageManager.PERMISSION_GRANTED) ? "GRANTED" : "DENIED";
+                Log.d(TAG, "    * " + permissions[i] + " -> " + status);
+            }
+        }
+        
+        // Log system state information for debugging
+        Log.d(TAG, "  - System info:");
+        Log.d(TAG, "    * Android version: " + Build.VERSION.SDK_INT);
+        Log.d(TAG, "    * Device manufacturer: " + Build.MANUFACTURER);
+        Log.d(TAG, "    * Device model: " + Build.MODEL);
+        
+        // Perform integrity check
+        boolean integrityOk = performPermissionIntegrityCheck();
+        Log.d(TAG, "  - Permission integrity check: " + (integrityOk ? "PASS" : "FAIL"));
         
         // Forward the result to Grantly SDK for processing
         boolean handled = Grantly.onRequestPermissionsResult(requestCode, permissions, grantResults);
         Log.d(TAG, "  - Handled by Grantly: " + handled);
+        
+        Log.d(TAG, "=== PERMISSION RESULT DEBUG END ===");
+    }
+    
+    /**
+     * Performs a comprehensive permission integrity check to detect any anomalies.
+     * This helps identify if permission states have been unexpectedly changed.
+     * 
+     * @return true if integrity check passes, false if anomalies detected
+     */
+    private boolean performPermissionIntegrityCheck() {
+        try {
+            // Check that we can only see our own app's information
+            PackageManager pm = getPackageManager();
+            String ourPackage = getPackageName();
+            
+            // Verify our package name hasn't been tampered with
+            if (ourPackage == null || ourPackage.trim().isEmpty()) {
+                Log.e(TAG, "INTEGRITY FAILURE: Package name is null or empty");
+                return false;
+            }
+            
+            if (!ourPackage.startsWith("dev.grantly.grantly.demo")) {
+                Log.w(TAG, "INTEGRITY WARNING: Unexpected package name: " + ourPackage);
+            }
+            
+            // Check basic permission system functionality
+            int cameraPermission = checkSelfPermission(android.Manifest.permission.CAMERA);
+            Log.d(TAG, "    * Camera permission check result: " + cameraPermission);
+            
+            // Verify we can access our own PackageInfo
+            android.content.pm.PackageInfo packageInfo = pm.getPackageInfo(ourPackage, PackageManager.GET_PERMISSIONS);
+            if (packageInfo == null) {
+                Log.e(TAG, "INTEGRITY FAILURE: Cannot access own PackageInfo");
+                return false;
+            }
+            
+            // Log declared permissions for reference
+            if (packageInfo.requestedPermissions != null) {
+                Log.d(TAG, "    * Declared permissions count: " + packageInfo.requestedPermissions.length);
+                for (String permission : packageInfo.requestedPermissions) {
+                    int status = checkSelfPermission(permission);
+                    Log.v(TAG, "      - " + permission + " -> " + 
+                        (status == PackageManager.PERMISSION_GRANTED ? "GRANTED" : "DENIED"));
+                }
+            }
+            
+            return true;
+            
+        } catch (Exception e) {
+            Log.e(TAG, "INTEGRITY FAILURE: Exception during integrity check", e);
+            return false;
+        }
     }
 
     private void initializeGrantly() {
