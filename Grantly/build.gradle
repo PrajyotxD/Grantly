@@ -96,8 +96,8 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 }
-/
-/ Publishing configuration
+
+// Publishing configuration
 publishing {
     publications {
         release(MavenPublication) {
